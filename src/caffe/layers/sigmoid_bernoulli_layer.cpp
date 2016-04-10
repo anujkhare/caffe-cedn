@@ -2,10 +2,11 @@
 #include <cmath>
 #include <vector>
 
-#include "caffe/layer.hpp"
-#include "caffe/vision_layers.hpp"
-#include "caffe/stochastic_neuron_layers.hpp"
-#include "caffe/util/math_functions.hpp"
+//#include "caffe/layer.hpp"
+//#include "caffe/vision_layers.hpp"
+//#include "caffe/stochastic_neuron_layers.hpp"
+//#include "caffe/util/math_functions.hpp"
+#include "caffe/layers/sigmoid_bernoulli.hpp"
 
 namespace caffe {
 

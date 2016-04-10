@@ -8,7 +8,8 @@
 
 #include <cfloat>
 
-#include "caffe/vision_layers.hpp"
+//#include "caffe/vision_layers.hpp"
+#include "caffe/layers/roi_pooling_layer.hpp"
 
 using std::max;
 using std::min;
