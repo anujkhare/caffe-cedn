@@ -1,0 +1,13 @@
+name: "layermax"
+layers {
+	bottom: "input_arr_1"
+	top: "output_arr"
+	name: "eltwise1"
+	type: ELTWISE
+	eltwise_param{operation:MAX}
+}
+input: "input_arr_1"
+input_dim: 7
+input_dim: 1
+input_dim: 1
+input_dim: 1
