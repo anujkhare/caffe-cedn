@@ -307,6 +307,7 @@ message ParamSpec {
 // Update the next available ID when you add a new LayerParameter field.
 //
 // LayerParameter next available layer-specific ID: 145 (last added: crop_param)
+// LayerParameter next available layer-specific ID: ?? (last added: roi_param)
 message LayerParameter {
   optional string name = 1; // the layer name
   optional string type = 2; // the layer type
@@ -396,6 +397,15 @@ message LayerParameter {
   optional ThresholdParameter threshold_param = 128;
   optional TileParameter tile_param = 138;
   optional WindowDataParameter window_data_param = 129;
+  // new ones have to start with 45. in old file - 41
+  // there would be parameters corr. to these layers, for others, none
+  optional UpsamplingParameter upsampling_param = 145;
+  optional UnpoolingParameter unpooling_param = 146;
+  optional FoldingParameter folding_param = 147;
+  optional DownsamplingParameter downsampling_param = 148;
+  optional LocalWeightedConvolutionParameter local_weighted_convolution_param = 149;
+  optional GaussianParameter gaussian_param = 150;
+  optional ROIPoolingParameter roi_pooling_param = 151;
 }
 
 // Message that stores parameters used to apply transformation
@@ -617,6 +627,17 @@ message CropParameter {
   repeated uint32 offset = 2;
 }
 
+// Message that stores parameters used by LocalWeightedConvolutionLayer
+message LocalWeightedConvolutionParameter {
+  optional uint32 num_output = 1; // The number of outputs for the layer
+  optional bool bias_term = 2 [default = true]; // whether to have bias terms
+  optional uint32 pad = 3 [default = 0]; // The padding size
+  optional uint32 kernel_size = 4; // The kernel size
+  optional uint32 stride = 6 [default = 1]; // The stride
+  optional FillerParameter weight_filler = 7; // The filler for the weight
+  optional FillerParameter bias_filler = 8; // The filler for the bias
+}
+
 message DataParameter {
   enum DB {
     LEVELDB = 0;
@@ -649,6 +670,15 @@ message DataParameter {
   // Prefetch queue (Number of batches to prefetch to host memory, increase if
   // data access bandwidth varies).
   optional uint32 prefetch = 10 [default = 4];
+}
+
+// Message that stores parameters used by DownsamplingLayer
+message DownsamplingParameter {
+  // Kernel size is given as a single value for equal
+  // dimensions in height and width or as Y, X pairs.
+  optional uint32 kernel_size = 1 [default = 2]; // The kernel size (square)
+  optional uint32 kernel_h = 2 [default = 2]; // The kernel height
+  optional uint32 kernel_w = 3 [default = 2]; // The kernel width
 }
 
 message DropoutParameter {
@@ -1108,6 +1138,59 @@ message TanHParameter {
   optional Engine engine = 1 [default = DEFAULT];
 }
 
+// Message that stores parameters used by UpsamplingLayer
+message UpsamplingParameter {
+  // Kernel size is given as a single value for equal
+  // dimensions in height and width or as Y, X pairs.
+  optional uint32 kernel_size = 1 [default = 2]; // The kernel size (square)
+  optional uint32 kernel_h = 2 [default = 2]; // The kernel height
+  optional uint32 kernel_w = 3 [default = 2]; // The kernel width
+}
+
+// Message that stores parameters used by UnpoolingLayer
+message UnpoolingParameter {
+  enum UnpoolMethod {
+    MAX = 0;
+    AVE = 1;
+    STOCHASTIC = 2;
+  }
+  optional UnpoolMethod unpool = 1 [default = MAX]; // The unpooling method
+  // Pad, kernel size, and stride are all given as a single value for equal
+  // dimensions in height and width or as Y, X pairs.
+  optional uint32 pad = 4 [default = 0]; // The padding size (equal in Y, X)
+  optional uint32 pad_h = 9 [default = 0]; // The padding height
+  optional uint32 pad_w = 10 [default = 0]; // The padding width
+  optional uint32 kernel_size = 2; // The kernel size (square)
+  optional uint32 kernel_h = 5; // The kernel height
+  optional uint32 kernel_w = 6; // The kernel width
+  optional uint32 stride = 3 [default = 1]; // The stride (equal in Y, X)
+  optional uint32 stride_h = 7; // The stride height
+  optional uint32 stride_w = 8; // The stride width
+}
+
+// Message that stores parameters used by FoldingLayer
+message FoldingParameter {
+  optional uint32 channels_folded = 1; // the # of channels of new folded matrix data
+  optional uint32 height_folded = 2; // the height of new folded matrix data
+  optional uint32 width_folded = 3; // the width of new folded matrix data
+}
+
+// Message that stores parameters used by GaussianLayer
+message GaussianParameter {
+  optional float sigma = 1; // the standard deviation of gaussian noise
+}
+
+// Message that stores parameters used by ROIPoolingLayer
+message ROIPoolingParameter {
+  // Pad, kernel size, and stride are all given as a single value for equal
+  // dimensions in height and width or as Y, X pairs.
+  optional uint32 pooled_h = 1 [default = 0]; // The pooled output height
+  optional uint32 pooled_w = 2 [default = 0]; // The pooled output width
+  // Multiplicative spatial scale factor to translate ROI coords from their
+  // input scale to the scale used when pooling
+  optional float spatial_scale = 3 [default = 1];
+}
+
 // Message that stores parameters used by TileLayer
 message TileParameter {
   // The index of the axis to tile.
@@ -1219,6 +1302,19 @@ message V1LayerParameter {
     TANH = 23;
     WINDOW_DATA = 24;
     THRESHOLD = 31;
+
+
+	// in old file, this started from 38
+    UPSAMPLING = 40;
+    FOLDING = 41;
+    UNPOOLING = 42;
+    DOWNSAMPLING = 43;
+    SIGMOID_BERNOULLI = 44;
+    TENSOR_PRODUCT = 45;
+    LOCAL_WEIGHTED_CONVOLUTION = 46;
+    LOCAL_WEIGHTED_DECONVOLUTION = 47;
+    GAUSSIAN = 48;
+    ROI_POOLING = 49;
   }
   optional LayerType type = 5;
   repeated BlobProto blobs = 6;
@@ -1262,6 +1358,16 @@ message V1LayerParameter {
   optional TransformationParameter transform_param = 36;
   optional LossParameter loss_param = 42;
   optional V0LayerParameter layer = 1;
+
+  // new ones have to start with 45. in old file - 41
+  // there would be parameters corr. to these layers, for others, none
+  optional UpsamplingParameter upsampling_param = 45;
+  optional UnpoolingParameter unpooling_param = 46;
+  optional FoldingParameter folding_param = 47;
+  optional DownsamplingParameter downsampling_param = 48;
+  optional LocalWeightedConvolutionParameter local_weighted_convolution_param = 49;
+  optional GaussianParameter gaussian_param = 50;
+  optional ROIPoolingParameter roi_pooling_param = 51;
 }
 
 // DEPRECATED: V0LayerParameter is the old way of specifying layer parameters
