@@ -24,9 +24,9 @@ class LocalWeightedConvolutionLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_LOCAL_WEIGHTED_CONVOLUTION;
-  }
+  //virtual inline LayerParameter_LayerType type() const {
+  //  return LayerParameter_LayerType_LOCAL_WEIGHTED_CONVOLUTION;
+  //}
   virtual inline int MinBottomBlobs() const { return 1; }
   virtual inline int MinTopBlobs() const { return 1; }
   virtual inline bool EqualNumBottomTopBlobs() const { return true; }

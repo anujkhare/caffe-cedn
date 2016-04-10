@@ -21,9 +21,9 @@ class TensorProductLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_TENSOR_PRODUCT;
-  }
+  //virtual inline LayerParameter_LayerType type() const {
+  //  return LayerParameter_LayerType_TENSOR_PRODUCT;
+  //}
 
   virtual inline int ExactNumBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }

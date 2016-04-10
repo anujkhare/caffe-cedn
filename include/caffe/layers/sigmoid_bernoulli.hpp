@@ -27,9 +27,9 @@ class SigmoidBernoulliLayer : public NeuronLayer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_SIGMOID_BERNOULLI;
-  }
+  //virtual inline LayerParameter_LayerType type() const {
+  //  return LayerParameter_LayerType_SIGMOID_BERNOULLI;
+  //}
 
  protected:
   /// @copydoc SigmoidBernoulli

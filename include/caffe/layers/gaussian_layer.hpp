@@ -21,9 +21,9 @@ class GaussianLayer : public Layer<Dtype> {
       vector<Blob<Dtype>*>* top);
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top);
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_GAUSSIAN;
-  }
+  //virtual inline LayerParameter_LayerType type() const {
+  //  return LayerParameter_LayerType_GAUSSIAN;
+  //}
   virtual inline int MinBottomBlobs() const { return 1; }
   virtual inline int MaxBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }

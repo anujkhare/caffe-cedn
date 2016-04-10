@@ -7,6 +7,7 @@
 #include "caffe/layer.hpp"
 #include "caffe/syncedmem.hpp"
 #include "caffe/util/math_functions.hpp"
+#include "caffe/proto/caffe.pb.h"
 
 namespace caffe {
 
@@ -25,9 +26,9 @@ class UnpoolingLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_UNPOOLING;
-  }
+  //virtual inline LayerParameter_LayerType type() const {
+  //  return LayerParameter_LayerType_UNPOOLING;
+  //}
   virtual inline int ExactNumTopBlobs() const { return 1; }
   virtual inline int MinBottomBlobs() const { return 1; }
   // MAX UNPOOL layers takes as input an extra bottom blob for the mask;
